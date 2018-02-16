@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require 'phari_doc_gen'
+PhariDocGen.generate(ARGV[0], ARGV[1])

@@ -1,0 +1,4 @@
+phari_doc_gen.gemspec
+phari_doc_gen-*
+doc/*
+test.rb
