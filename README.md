@@ -1,3 +1,5 @@
+This repository was imported from the previous project at GitLab. All previous work can be found [here](https://gitlab.com/LuizPPA/PhariDocGen).
+
 Hi there buddy! I've heard you've been looking for a simple and functional documentation generator for this Ruby web app of yours. So here goes a brief tutorial on how to use this little gem developed by [Phari Solutions](http://phari.solutions).
 
 
@@ -12,7 +14,7 @@ $ gem install phari_doc_gen
 ## Description
 
 First things first. To use this gem, you'll need to be following the [sinatra](http://www.sinatrarb.com/)/[padrino](http://padrinorb.com/) patterns. If you're using these frameworks probably you already matched the requisites, otherwise, organize your folders properly. Your project tree has to be organized in a main directory called "api" that must contain another folder "app" with three other directories "models", "helpers" and "controllers" within. The files will also have to be especifically named. But we'll look further into it later.
-Now, requisites aside, Phari Doc Generator will provide you an easy way to generate documentation for your projects. The result will be a project page with a description that can be written using a simplified markdown syntax that is going to be explained ahead. Also, each ruby Class will have it's own page especifying it's helper methods and controllers routes including their inputs, outputs and descriptions. The gem includes an executable file and the classes that can be used individually, providing the possibility to use the generator for **any** project structure. You can see the repository (and contribute as you wish) [here](https://gitlab.com/LuizPPA/PhariDocGen).
+Now, requisites aside, Phari Doc Generator will provide you an easy way to generate documentation for your projects. The result will be a project page with a description that can be written using a simplified markdown syntax that is going to be explained ahead. Also, each ruby Class will have it's own page especifying it's helper methods and controllers routes including their inputs, outputs and descriptions. The gem includes an executable file and the classes that can be used individually, providing the possibility to use the generator for **any** project structure. You can see the repository (and contribute as you wish) [here](https://github.com/PhariSolutions/Phari-Doc-Gen).
 
 ## Project Structure
 Bear in mind that the whole generator can be manipulated to fit any structure you wish, soon we will be creating a tutorial about how to do so. However, if you just want to use the standard generator included on the gem, you must follow some rules...
@@ -60,7 +62,7 @@ Example: @route CREATE
 Example: @name greetings
 * ```@param (param name) (param datatype):``` Indicate an input for a method or a route.
 Example: @param yourName string
-* ```@return (return name) (return datatype):``` Indicate the return value for a method or a route. 
+* ```@return (return name) (return datatype):``` Indicate the return value for a method or a route.
 Example: @return greeting string (may also be @return nil or @return boolean)
 * ```** (description):``` Indicate the description for a method or a route.
 Example: ** Print "Hello (your name)" and returns the same string.
