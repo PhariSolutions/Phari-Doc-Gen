@@ -5,7 +5,7 @@ This is a brief tutorial on how to use this little gem developed by [Phari Solut
 
 Let's start by downloading the latest gem release with:
 
-Latest version: [![Phari Doc Gen](https://badge.fury.io/rb/phari_doc_gen.svg)](https://badge.fury.io/rb/phari_doc_gen)
+Latest version: [![Gem Version](https://badge.fury.io/rb/phari_doc_gen.svg)](https://badge.fury.io/rb/phari_doc_gen)
 
 ```
 $ gem install phari_doc_gen
