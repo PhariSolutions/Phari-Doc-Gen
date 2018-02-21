@@ -54,25 +54,33 @@
             <%description = method.description%>
             <div class='list-group-item'>
             <h4 class='list-group-item-heading'>CRUD: <%=type%><br>Name: <%name%></h4>
-            <p><br>Inputs:<br><ul>
-            <%unless inputs.nil?%>
-              <%for input in inputs%>
-                <%input = input[1]%>
-                <li><%=input.serialize%></li>
-              <%end%>
-            <%end%>
-            </ul><br>Outputs:<br><ul>
-            <%unless outputs.nil?%>
-              <% for output in outputs%>
-                  <%output = output[1]%>
-                  <%if output != 'nil'%>
-                      <li><%=output.serialize%></li>
-                  <%else%>
-                      <li>Null</li>
+            <p>
+              <br>Inputs:
+              <br>
+              <ul>
+                <%unless inputs.nil?%>
+                  <%for input in inputs%>
+                    <%input = input[1]%>
+                    <li><%=input.serialize%></li>
                   <%end%>
-              <%end%>
-            <%end%>
-          </ul><br>Description: <%=description%></p>
+                <%end%>
+              </ul>
+              <br>Outputs:
+              <br>
+              <ul>
+                <%unless outputs.nil?%>
+                  <% for output in outputs%>
+                      <%output = output[1]%>
+                      <%if output != 'nil'%>
+                          <li><%=output.serialize%></li>
+                      <%else%>
+                          <li>Null</li>
+                      <%end%>
+                  <%end%>
+                <%end%>
+              </ul>
+              <br>Description: <%=description%>
+            </p>
             </div>
           <%end%>
         <%end%>

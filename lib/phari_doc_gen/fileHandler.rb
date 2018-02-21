@@ -5,13 +5,12 @@
 # Luiz Philippe.
 #--------------------------------------------------------------------------------------------
 
+require 'erubis'
 require_relative 'modelo.rb'
 require_relative 'rota.rb'
 require_relative 'metodo.rb'
 require_relative 'methodParam.rb'
 require_relative 'meta.rb'
-require 'erubis'
-include Meta
 
 class FileHandler
     # Reading files
