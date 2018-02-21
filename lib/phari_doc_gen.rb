@@ -6,16 +6,16 @@
 #--------------------------------------------------------------------------------------------
 
 require 'fileutils'
-require_relative 'phari_doc_gen/Modelo.rb'
-require_relative 'phari_doc_gen/Rota.rb'
-require_relative 'phari_doc_gen/Metodo.rb'
-require_relative 'phari_doc_gen/MethodParam.rb'
-require_relative 'phari_doc_gen/FileHandler.rb'
+require_relative 'phari_doc_gen/modelo.rb'
+require_relative 'phari_doc_gen/rota.rb'
+require_relative 'phari_doc_gen/metodo.rb'
+require_relative 'phari_doc_gen/methodParam.rb'
+require_relative 'phari_doc_gen/fileHandler.rb'
 
 class PhariDocGen
   # Generate documentation for standard projects
   def self.generate (project, outputPath)
-      generate = PhariDoc::FileHandler.new
+      generate = FileHandler.new
       # Ask for project name if nil
       if project.nil?
           puts "Insert project which generate documentation"

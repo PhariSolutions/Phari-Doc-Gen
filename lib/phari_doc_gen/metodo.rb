@@ -5,7 +5,7 @@
 # Luiz Philippe.
 #--------------------------------------------------------------------------------------------
 
-require_relative 'MethodParam.rb'
+require_relative 'methodParam.rb'
 
 class Metodo
     @type = ''
