@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<head lang='en'>
+    <meta charset='UTF-8'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u' crossorigin='anonymous'>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa' crossorigin='anonymous'></script>
+    <link rel='stylesheet' href='css/master.css'>
+</head>
+
+<body>
+    <nav class='navbar navbar-default navbar-fixed-top'>
+        <div class='container-fluid'>
+            <div class='navbar-header'>
+              <a href='project.html'><img class='logo' src='https://lh3.googleusercontent.com/ICEHU3m_zkW_82Xq8bEBKoIYHvPA4u_O6qEc-vUaeRWNppdQbPOLO5lm_mdEl0NPTxQ5vdINr1Nr6ZVGgmR8JF4FtjqzhncUDtU8JQSeP_14Wn83-lVVH9fGjNy5znkXYMdZzJuH5pxEDT0s6nAYp3VIf2YekczAbTjy1SHcdmT57fBGg2z9Ba4sr0OYJp8b5mVFRVxedqnI__nKo3ujRI7wOZ89ILi3EOaS51THdCXWZ8Uq8RgAPGEDXTNc65oodAessPFjFbOBXtpA9lWOYM3irkwB2VvAMmebDH75pGXKY2u9e21dJOrNlYjZhNPZN-hdbSBj-BAnNeDJO89VOXRVEw0eE16VSOj9t_04-kVsw2ZJkjZc7pdphaNkG-1h-LM3G6eI7gYtDf2f-nTO9EyziFFF_UOrHLTm1CuY_HfgvUZ4b4rCV5pSokgtbhecWys8kzO5SneXSV2VYDVQYuABT9UKv50u_oEQJggtFnD3pu2HV-r9EO210U272ormArABnRtL29SQVFrEa8sBfwVtLGP2fJ4eg5sGbogi3Lz4t30rQBWS8yMN2aLtLvvU8K5FbR-5VmC-HdhAAbv4ZJZO_x7SYUzMe4GlYzDnVai7jTmwr02UGf7jwoucYKjsSsH8R-ydgsYn45T5hWmxWZwLJtOsPy3BZTr_NV6-vQ=w800-h500-no' height='50px' alt='Logo'></a>
+            </div>
+            <ul class='nav navbar-nav'>
+            </ul>
+        </div>
+    </nav>
+    <br><br><br>
+    <div class='container panel panel-default'>
+      <div class='row'>
+        <div class='panel panel-default'>
+          <div class='panel-heading'>
+            <h1><%=project%></h1>
+          </div>
+          <div class='panel-body'>
+            <h2>Project Description</h2>
+            <%=description%>
+          </div>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='col-md-4'>
+          <ul class='list-group'>
+            <%unless models.nil?%>
+              <%for model in models%>
+                <%link = "models/#{model.name.downcase}.html"%>
+                <%name = model.name%>
+                <a href='<%=link%>' class='list-indexes list-group-item'><%=name%></a>
+              <%end%>
+            <%end%>
+          </ul>
+        </div>
+        <div class='col-md-4 col-md-offset-2'>
+          <img src='https://lh3.googleusercontent.com/0vxwJN77Sb33ktxcq2pv2jGLyhBvboPScuK6iiUnJFRFb1zfSR9_o_U1uJuMujA5lMrz2msol4oxiS5dZcmiULjbCgL54q-mVFEJZN4tFkm8G03Er8eBmCqlmlpBUu4fePmuhWcOoIVPGhdmLpN5WQOUtg8j4f98uiPuI9BhTalI7sN1H_KRLZBLY9UU22n_qXnAt2t-TsC5nr1-noJB0KSDpJMubjPPbJKhvRwPnrJINjZ9t00dTJkoeGlUCc5wS92GarlXTf1tUcEkfyYGyhwrphIqx06KpozuCKJLiFPKjLbEI_jfjx4hZEg8nR2HP-oKAv5b1tFH6tS6CmcHxWlo8iN5y7Xe1auIAosygKYG9j4lZOWaxsD7kGADf6r22J0UHj1Jyxrx5bp0J9l6QgFBg0NejB4kLkOu0yHM8TjgebOdRW1GXNfdXAcgYlzlzB5IWCDz7Iy8L7pSdDEOZsxP5Cb_7GY1LbvvXxZ68Zceg-mZGSOLXTR44XpxWZVA8xjzI6wQmONw-pSRgCycGnjPp5TWtoGNugk3OlY3ax3g7T0aGgRKthlmHqYSh4tWH6bgoBPpe41q7U6P9445VQG5gOlORuGADWQNrxbL-dzflclo7bDPlTNykfp_lmwdKg8JCYPuLGwStrpInNqk-sQQkNb30Cyk3NaaMEZWpQ=w300-h497-no' alt='Phari logo' width='100%'>
+        </div>
+      </div>
+    </div>
+</body>

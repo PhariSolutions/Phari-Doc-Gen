@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<head lang='en'>
+    <meta charset='UTF-8'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u' crossorigin='anonymous'>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa' crossorigin='anonymous'></script>
+    <link rel='stylesheet' href='../css/master.css'>
+</head>
+
+<body>
+<nav class='navbar navbar-default navbar-fixed-top'>
+    <div class='container-fluid'>
+        <div class='navbar-header'>
+          <a href='../project.html'><img class='logo' src='https://lh3.googleusercontent.com/ICEHU3m_zkW_82Xq8bEBKoIYHvPA4u_O6qEc-vUaeRWNppdQbPOLO5lm_mdEl0NPTxQ5vdINr1Nr6ZVGgmR8JF4FtjqzhncUDtU8JQSeP_14Wn83-lVVH9fGjNy5znkXYMdZzJuH5pxEDT0s6nAYp3VIf2YekczAbTjy1SHcdmT57fBGg2z9Ba4sr0OYJp8b5mVFRVxedqnI__nKo3ujRI7wOZ89ILi3EOaS51THdCXWZ8Uq8RgAPGEDXTNc65oodAessPFjFbOBXtpA9lWOYM3irkwB2VvAMmebDH75pGXKY2u9e21dJOrNlYjZhNPZN-hdbSBj-BAnNeDJO89VOXRVEw0eE16VSOj9t_04-kVsw2ZJkjZc7pdphaNkG-1h-LM3G6eI7gYtDf2f-nTO9EyziFFF_UOrHLTm1CuY_HfgvUZ4b4rCV5pSokgtbhecWys8kzO5SneXSV2VYDVQYuABT9UKv50u_oEQJggtFnD3pu2HV-r9EO210U272ormArABnRtL29SQVFrEa8sBfwVtLGP2fJ4eg5sGbogi3Lz4t30rQBWS8yMN2aLtLvvU8K5FbR-5VmC-HdhAAbv4ZJZO_x7SYUzMe4GlYzDnVai7jTmwr02UGf7jwoucYKjsSsH8R-ydgsYn45T5hWmxWZwLJtOsPy3BZTr_NV6-vQ=w800-h500-no' height='50px' alt='Logo'></a>
+        </div>
+        <ul class='nav navbar-nav'>
+        </ul>
+    </div>
+</nav>
+<br><br><br>
+<div class='container panel panel-default'>
+  <div class='row'>
+    <div class='panel panel-default'>
+      <div class='panel-heading'>
+        <h1><%=project%></h1>
+      </div>
+      <div class='panel-body'>
+        <h2><%=name%> Model</h2>
+        <h4>
+        <%unless relations.nil?%>
+            <%for relation in  relations%>
+                <br>
+                <%=relation%>
+            <%end%>
+        <%end%>
+        </h4>
+      </div>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-6'>
+      <div class='panel panel-default'>
+        <div class='panel-heading'>
+          <h2>Methods</h2>
+        </div>
+      </div>
+      <ul class='list-group'>
+        <%unless methods.nil?%>
+          <%for method in methods%>
+            <%type = method.type%>
+            <%name = method.name%>
+            <%inputs = method.inputs%>
+            <%outputs = method.outputs%>
+            <%description = method.description%>
+            <div class='list-group-item'>
+            <h4 class='list-group-item-heading'>CRUD: <%=type%><br>Name: <%name%></h4>
+            <p><br>Inputs:<br><ul>
+            <%unless inputs.nil?%>
+              <%for input in inputs%>
+                <%input = input[1]%>
+                <li><%=input.serialize%></li>
+              <%end%>
+            <%end%>
+            </ul><br>Outputs:<br><ul>
+            <%unless outputs.nil?%>
+              <% for output in outputs%>
+                  <%output = output[1]%>
+                  <%if output != 'nil'%>
+                      <li><%=output.serialize%></li>
+                  <%else%>
+                      <li>Null</li>
+                  <%end%>
+              <%end%>
+            <%end%>
+          </ul><br>Description: <%=description%></p>
+            </div>
+          <%end%>
+        <%end%>
+      </ul>
+    </div>
+  <div class='col-md-6'>
+    <div class='panel panel-default'>
+      <div class='panel-heading'>
+        <h2>Routes</h2>
+      </div>
+    </div>
+  <ul class='list-group'>
+    <%unless routes.nil?%>
+      <%for route in routes%>
+        <%type = route.type%>
+        <%name = route.name%>
+        <%request = route.request%>
+        <%dataInput = route.dataInput%>
+        <%inputs = route.inputs%>
+        <%outputs = route.outputs%>
+        <div class='list-group-item'>
+        <h4 class='list-group-item-heading'>CRUD: <%=type%><br>Name: <%=name%></h4>
+        <p><br>Request: <%=request%><br>
+        <br>Notation type: <%=dataInput%><br>
+        <br>Inputs:<br><ul>
+        <%unless inputs.nil?%>
+            <%inputs.each do |input|%>
+                <%input = input[1]%>
+                <li><%=input.serialize%></li>
+            <%end%>
+        <%end%>
+        </ul><br>Outputs:<br><ul>
+        <%unless outputs.nil?%>
+            <%outputs.each do |output|%>
+                <%output = output[1]%>
+                <%if output != 'nil'%>
+                    <li><%=output.serialize%></li>
+                <%else%>
+                    <li>Null</li>
+                <%end%>
+            <%end%>
+        <%end%>
+        </ul></p>
+        </div>
+      <%end%>
+    <%end%>
+  </ul>
+  </div>
+  </div>
+  </div>
+</body>

@@ -1,6 +1,6 @@
 require_relative 'meta'
 
-module PhariDocGen
+module PhariDoc
   module Utils
 
     # Return a directory with the project libraries.

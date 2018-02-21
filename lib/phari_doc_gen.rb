@@ -15,7 +15,7 @@ require_relative 'phari_doc_gen/FileHandler.rb'
 class PhariDocGen
   # Generate documentation for standard projects
   def self.generate (project, outputPath)
-      generate = FileHandler.new
+      generate = PhariDoc::FileHandler.new
       # Ask for project name if nil
       if project.nil?
           puts "Insert project which generate documentation"

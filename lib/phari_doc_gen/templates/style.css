@@ -1,0 +1,28 @@
+body{
+  background-color: #2CA896;
+}
+a{
+  color: #2CA896;
+}
+a:hover{
+  color: #333;
+}
+li{
+  padding-left: 3%;
+}
+code{
+  background-color: #DDD;
+  color: black;
+}
+.logo{
+  margin: 5%;
+}
+.left{
+  float: left;
+}
+.right{
+  float: right;
+}
+.list-indexes{
+  font-size: 24px;
+}
