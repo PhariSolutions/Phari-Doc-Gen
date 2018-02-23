@@ -17,7 +17,6 @@ class FileHandler
     # Find a folder with the project name
     def packageExistis?(packageName)
         found = false
-        package = ''
         puts'Finding project'
         puts'It may take some time...'
         packageName += '/' unless packageName.end_with?('/')
@@ -481,7 +480,9 @@ class FileHandler
               type = type.slice(0, type.index("\s"))
             end
             type = type.slice(0, type.size-1) if type.end_with?("\s") || type.end_with?("\n")
-            isObject = true if type.downcase == "object"
+            isObject = type.downcase == "object"
+            isCollection = type.downcase == "array"
+            # Inserting attributes inside objects
             if name.include?(">")
               isChild = true
               path = []
@@ -492,17 +493,23 @@ class FileHandler
               end
               fatherObject = nil
               path.each do |object|
-                raise ArgumentError, "Object #{object} does not exists!" unless objects.has_key?(object) && objects["#{object}"].isObject
-                fatherObject = objects["#{object}"]
+                if (fatherObject.nil? || fatherObject.isObject)
+                  raise ArgumentError, "Object #{object} does not exists!" unless objects.has_key?(object) && (objects["#{object}"].isObject || objects["#{object}"].isCollection)
+                  fatherObject = objects["#{object}"]
+                elsif (fatherObject.isCollection)
+                  raise ArgumentError, "Object #{object} is not a position of #{fatherObject.name}!" unless (objects["content"].isObject || objects["content"].isCollection)
+                  fatherObject = objects["content"]
+                end
                 objects = fatherObject.childAttributes
               end
             end
-            data = MethodParam.new(name, type, notNull, isObject, isChild, example)
-            fatherObject.addField data unless fatherObject.nil?
+            data = MethodParam.new(name, type, notNull, isObject, isCollection, isChild, example)
+            fatherObject.addField data unless (fatherObject.nil? || fatherObject.isCollection)
+            fatherObject.setContent data unless (fatherObject.nil? || fatherObject.isObject)
             # Return the data
             return data
         elsif argument.include? "nil"
-            data = MethodParam.new('', 'nil', nil, nil, nil, nil)
+            data = MethodParam.new('', 'nil', false, false, false, false, nil)
             return data
         end
         argumentText = argument.slice(0, argument.index("\n"))
@@ -545,8 +552,7 @@ class FileHandler
     # Write the css content
     def writeCSS(file)
       css_file = gem_libdir+'/templates/style.css'
-      css = File.read(css_file)
-      file.write(css)
+      file.write(File.read(css_file))
     end
 
     #Write the main project HTML content
