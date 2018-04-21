@@ -16,12 +16,8 @@ class FileHandler
     # Reading files
     # Find a folder with the project name
     def packageExistis?(packageName)
-        found = false
-        puts'Finding project'
-        puts'It may take some time...'
         packageName += '/' unless packageName.end_with?('/')
-        found = Dir.exists?(packageName)
-        if found
+        if Dir.exists?(packageName)
             # Return the folder path if found
             return packageName
         else
@@ -115,8 +111,10 @@ class FileHandler
         arr.each do |line|
             # Read markdown syntax and trasform into HTML tags
             next if line.start_with?('# ') || line.start_with?('#!shell')
-            line = '<h3>' + line.slice(3, line.length - 3) + '</h3>'if line.start_with?('## ')
-            line = '<h4>' + line.slice(4, line.length - 4) + '</h4>' if line.start_with?('### ')
+            line = '<h1>' + line.slice(2, line.length - 2) + '</h1>' if line.start_with?('# ')
+            line = '<h2>' + line.slice(3, line.length - 3) + '</h2>' if line.start_with?('## ')
+            line = '<h3>' + line.slice(4, line.length - 4) + '</h3>' if line.start_with?('### ')
+            line = '<h4>' + line.slice(5, line.length - 5) + '</h4>' if line.start_with?('#### ')
             line = '<h5>' + line.slice(6, line.length - 6) + '</h5>' if line.start_with?('##### ')
             line = '<li>' + line.slice(2, line.length - 2) + '</li>' if line.start_with?('* ')
             line = higlightText(line) while hasBetween?(line, '**', '**')
@@ -269,10 +267,8 @@ class FileHandler
                     nome = argument
                 when 'param'
                     data = dataValue(argument, inputs)
-                    inputs["#{data.name}"] = data unless data.isChild
                 when 'return'
                     data = dataValue(argument, outputs)
-                    outputs["#{data.name}"] = data unless data.isChild
                 else
                     # If a possible syntax error is found, a warning is sent informing file and linne
                     puts "Warning: in #{helpername}:#{lineIndex}: #{keyword} is not a keyword" if keyword != 'namespace'
@@ -365,10 +361,8 @@ class FileHandler
                 nome = argument
             when 'param'
                 data = dataValue(argument, inputs)
-                inputs["#{data.name}"] = data unless data.isChild
             when 'return'
                 data = dataValue(argument, outputs)
-                outputs["#{data.name}"] = data unless data.isChild
             else
                 # If a possible syntax error is found, a warning is sent informing file and linne
                 # (Here in the namespace comparison, i'm doing a little mcgyver)
@@ -443,8 +437,8 @@ class FileHandler
         raise ArgumentError.new("Sytanx error: expected 2 arguments (none given)") unless hasSomething?(sentence)
         raise ArgumentError.new("Sytanx error: expected 2 arguments (one given)") unless sentence.include?("\s")
         finalIndex = line.index("\s", line.index('@'))
-        lenght = finalIndex - initialIndex
-        keyword = line.slice(initialIndex, lenght)
+        length = finalIndex - initialIndex
+        keyword = line.slice(initialIndex, length)
         argument = line.slice(finalIndex + 1, line.size - finalIndex)
         raise ArgumentError.new("Sytanx error: expected 2 arguments (one given)") unless hasSomething?(argument)
         args << keyword
@@ -462,66 +456,97 @@ class FileHandler
         false
     end
 
+    def clear str
+      firstIndex = 0
+      lastIndex = str.length
+      for i in 0..str.length-1
+        if str[i].match(/^[[:alpha:]]$/)
+          lastIndex = i + 1
+        end
+      end
+      str = str.slice(0, lastIndex)
+      for i in 0..str.length-1
+          if str[i].match(/^[[:alpha:]]$/)
+             firstIndex = i - 1
+             break
+          end
+      end
+      str = str.slice(firstIndex + 1, str.length - firstIndex)
+      str
+    end
+
     # If the clause is a param or return value, decode the name and datatype
     def dataValue(argument, objects)
-        if argument.include? "\s"
-            notNull = true
-            isObject = false
-            isCollection = false
-            isChild = false
-            name = argument.slice(0, argument.index("\s"))
-            if name.end_with?('?')
-              notNull = false
-              name = name.slice(0, name.index('?'))
-            end
-            type = argument.slice(argument.index("\s") + 1, argument.size - 2)
-            if type.include? "\s"
-              example = type.slice(type.index("\s")+1, type.size-1-type.index("\s"))
-              type = type.slice(0, type.index("\s"))
-            end
-            type = type.slice(0, type.size-1) if type.end_with?("\s") || type.end_with?("\n")
-            isObject = type.downcase == "object"
-            isCollection = type.downcase == "array"
-            # Inserting attributes inside objects
-            if name.include?(">")
-              isChild = true
-              path = []
-              while name.include?(">")
-                prefix = name.slice(0, name.index(">"))
-                name = name.slice(name.index(">")+1, name.size-(name.index(">")+1))
-                path << prefix
-              end
-              fatherObject = nil
-              path.each do |object|
-                if (fatherObject.nil? || fatherObject.isObject)
-                  raise ArgumentError, "Object #{object} does not exists!" unless objects.has_key?(object) && (objects["#{object}"].isObject || objects["#{object}"].isCollection)
-                  fatherObject = objects["#{object}"]
-                elsif (fatherObject.isCollection)
-                  raise ArgumentError, "Object #{object} is not a position of #{fatherObject.name}!" unless (objects["content"].isObject || objects["content"].isCollection)
-                  fatherObject = objects["content"]
-                end
-                objects = fatherObject.childAttributes
-              end
-            end
-            data = MethodParam.new(name, type, notNull, isObject, isCollection, isChild, example)
-            fatherObject.addField data unless (fatherObject.nil? || fatherObject.isCollection)
-            fatherObject.setContent data unless (fatherObject.nil? || fatherObject.isObject)
-            # Return the data
-            return data
-        elsif argument.include? "nil"
-            data = MethodParam.new('', 'nil', false, false, false, false, nil)
-            return data
+        args = []
+        while argument.include? ','
+          raise ArgumentError, 'Unexpected ","' unless hasSomething?(argument)
+          args << argument.slice(0, argument.index(','))
+          argument = argument.slice(argument.index(',') + 1, argument.length - argument.index(','))
+          argument = clear(argument)
         end
-        argumentText = argument.slice(0, argument.index("\n"))
-        # If any information is missing or incorrect, raises an Argument Error
-        raise ArgumentError.new("Sytanx error: #{argumentText} is no data")
+        argument = clear(argument)
+        args << argument
+        args.each do |arg|
+          if arg.include? "\s"
+              notNull = true
+              isObject = false
+              isCollection = false
+              isChild = false
+              name = arg.slice(0, arg.index("\s"))
+              if name.end_with?('?')
+                notNull = false
+                name = name.slice(0, name.index('?'))
+              end
+              type = arg.slice(arg.index("\s") + 1, arg.size - 2)
+              if type.include? "\s"
+                example = type.slice(type.index("\s")+1, type.size-1-type.index("\s"))
+                type = type.slice(0, type.index("\s"))
+              end
+              type = type.slice(0, type.size-1) if type.end_with?("\s") || type.end_with?("\n")
+              isObject = type.downcase == "object"
+              isCollection = type.downcase == "array"
+              # Inserting attributes inside objects
+              if name.include?(">")
+                isChild = true
+                path = []
+                while name.include?(">")
+                  prefix = name.slice(0, name.index(">"))
+                  name = name.slice(name.index(">")+1, name.size-(name.index(">")+1))
+                  path << prefix
+                end
+                fatherObject = nil
+                children = objects
+                path.each do |object|
+                  if (fatherObject.nil? || fatherObject.isObject)
+                    raise ArgumentError, "Object #{object} does not exists!" unless children.has_key?(object) && (children["#{object}"].isObject || children["#{object}"].isCollection)
+                    fatherObject = children["#{object}"]
+                  elsif (fatherObject.isCollection)
+                    raise ArgumentError, "Object #{object} is not a position of #{fatherObject.name}!" unless (children["content"].isObject || children["content"].isCollection)
+                    fatherObject = children["content"]
+                  end
+                  children = fatherObject.childAttributes
+                end
+              end
+              data = MethodParam.new(name, type, notNull, isObject, isCollection, isChild, example)
+              fatherObject.addField data unless (fatherObject.nil? || fatherObject.isCollection)
+              fatherObject.setContent data unless (fatherObject.nil? || fatherObject.isObject)
+              # Return the data
+              objects["#{data.name}"] = data unless data.isChild
+          elsif arg.include? "nil"
+              data = MethodParam.new('', 'nil', false, false, false, false, nil)
+              objects["#{data.name}"] = data unless data.isChild
+          else
+              # If any information is missing or incorrect, raises an Argument Error
+              raise ArgumentError.new("Syntax error: #{arg} is no data")
+          end
+        end
     end
 
     # Decode the text from a description clause
     def decodeDescription(line)
         initialIndex = line.index('*') + 3
-        lenght = line.size - initialIndex
-        description = line.slice(initialIndex, lenght)
+        length = line.size - initialIndex
+        description = line.slice(initialIndex, length)
         # Return the description text
         description
     end
