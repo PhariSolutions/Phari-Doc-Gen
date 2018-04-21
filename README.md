@@ -16,7 +16,7 @@ $ gem install phari_doc_gen
 
 *Phari Doc Generator* follows the [sinatra](http://www.sinatrarb.com/)/[padrino](http://padrinorb.com/) file structre patterns. If you are familiar with these frameworks, you have likely already matched their requisites; if not, organize your folders as described below.
 
-*Phari Doc Generator* provides an easy way to generate project documentation. The result will be a project page, consisting of a description written in a simplified [markdown syntax](#documentation-syntax). 
+*Phari Doc Generator* provides an easy way to generate project documentation. The result will be a project page, consisting of a description written in a simplified [markdown syntax](#documentation-syntax).
 
 For each ruby class, the gem will generate a page that specifies the routes of its helper methods and controllers, including inputs, outputs and descriptions. Also included is an executable file, as well as the classes that can be used individually, allowing for the possibility of using the gem with **any** file structure.
 
@@ -24,17 +24,16 @@ For each ruby class, the gem will generate a page that specifies the routes of i
 ## Project Structure
 > Keep in mind that the generator can be manipulated to fit any file structure (a tutorial demonstrating how to do so will soon be created).
 
-As mentioned, this gem is mainly for sinatra/padrino projects, so the standard structure of padrino is considered here. 
+As mentioned, this gem is mainly for sinatra/padrino projects, so the standard structure of padrino is considered here.
 
 Inside the root directory is the main directory `api`, which contains an `app` directory - inside which are three more directories: `models`, `helpers` and `controllers`. A project called 'sayhello' should be organized like this:
 
 ```
 sayhello
-├── api
-|   └── app
-|       ├── controllers
-|       ├── helpers
-|       └── models
+├── app
+|   ├── controllers
+|   ├── helpers
+|   └── models
 └── README.md
 ```
 
@@ -47,14 +46,13 @@ Suppose our project is called 'sayhello' and has a single class called 'Hello.' 
 
 ```
 sayhello
-├── api
-|   └── app
-|       ├── controllers
-|       |   └── hello.rb
-|       ├── helpers
-|       |   └── hello_helper.rb
-|       └── models
-|           └── hello.rb
+├── app
+|   ├── controllers
+|   |   └── hello.rb
+|   ├── helpers
+|   |   └── hello_helper.rb
+|   └── models
+|       └── hello.rb
 └── README.md
 ```
 
@@ -62,7 +60,7 @@ sayhello
 ## Documentation Syntax
 The notation syntax for the generator is quite simple. You'll just have to document the helpers and controllers files in order to generate the classes's pages. For these, we will be using seven keywords or "clauses":
 
-* ```@(request type) (notation type \*optional):``` Indicate the request method and notation used for the next routes.
+* ```@(request type) (notation type *optional):``` Indicate the request method and notation used for the next routes.
 Example: @POST json
 * ```@methods (method type):``` Indicate a method type relative to the class's CRUD.
 Example: @methods CREATE
@@ -101,6 +99,22 @@ end
 
 Notice that the @param clause is non-unique, which means that it can be called N times and it's value will be pushed into an array instead of overwrited. Recalling an unique clause without closing the method will cause it to overwrite.
 
+You can also use inline declarations like:
+
+```
+# @methods RETRIEVE
+
+# @name greetings
+# @param yourname string, daytime string
+# @return greetings string
+# ** Print "Hello yourname, good daytime." and return the same string
+def greetings(yourname, daytime)
+    greeting = "Hello #{yourname}, good #{daytime}."
+    puts greeting
+    return greeting
+end
+```
+
 ### Declaring routes
 
 Routes have @route, @(request type), @name, @param and @return clauses. They must be declared on the controller files. You can open a route by calling a @(request type) clause and close with @route or @(request type) clause (colsing with @(request type) will automatically open a new one). At the end of the file, all closed and routes (and the currently open one, if any) and it's attributes will be loaded to the generator. An example of route declaration is:
@@ -120,6 +134,8 @@ post /greetings do
     return greeting
 end
 ```
+
+Inline declarations are also supported in routes.
 
 It's a good practice to always set your permanent clauses before doing anything else.
 
@@ -141,9 +157,11 @@ This will structure a json object in your model page.
 The markdown syntax used to write the project's description is much alike the one used in commom websites like GitHub. So frequently your repository README will require no modifications. However, the syntax used on this project has fewer resources than the usual markdown syntax.
 Rules:
 
-* **## Title 1**
-* **### Title 2**
-* **##### Title 3**
+* **# Title 1**
+* **## Title 2**
+* **### Title 3**
+* **#### Title 4**
+* **##### Title 5**
 * **\* list**
 * **\*\*bold\*\***
 * **\*italic***
